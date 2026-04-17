@@ -67,14 +67,6 @@ Session state keeps your analysis on screen across downloads and toggles — no 
 - **Proactive alerts** — "your competitor just shipped X, here's what it threatens in your roadmap"
 - **API** — feed the structured output into existing PM tools (Productboard, Jira, Notion) so competitive signal becomes a real input to prioritization
 
-## Why I Built This
-
-I built this as a portfolio piece while applying for a PM role at [Wix](https://www.wix.com). The goal wasn't to ship a polished SaaS — it was to demonstrate three things product thinking cares about:
-
-1. **Framing a real problem** (PMs waste hours on research that rarely drives decisions) and solving for the *job* (get to a decision faster), not the *symptom* (make the research itself prettier).
-2. **Making the strategic insight the hero of the output** — the "Feature Gap" recommendation is what separates this from yet another AI summarizer.
-3. **Shipping the whole loop end-to-end** — from scrape to rendered report to exportable artifact — because PMs who have built products tend to make better product decisions.
-
 ---
 
 ## Technical Setup
