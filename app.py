@@ -1,6 +1,7 @@
 """Streamlit UI for the Competitor Intelligence & Product Strategy tool."""
 from html import escape
 from typing import Iterable
+from urllib.parse import urlparse
 
 import streamlit as st
 
@@ -145,6 +146,7 @@ header[data-testid="stHeader"] { background: transparent; }
     padding: 0.85rem 1rem !important;
     font-size: 1rem !important;
     background: var(--surface) !important;
+    color: #31333F !important;
     transition: border-color 0.15s, box-shadow 0.15s;
 }
 .stTextInput > div > div > input:focus {
@@ -464,6 +466,21 @@ if submitted:
         st.warning("Please enter a URL to analyze.")
         st.stop()
 
+    _raw = url.strip()
+    _normalized = _raw if _raw.startswith(("http://", "https://")) else f"https://{_raw}"
+    _parsed = urlparse(_normalized)
+    if not _parsed.hostname or "." not in _parsed.hostname:
+        st.warning(
+            "Oops! That doesn't look like a valid URL. Please make sure to paste "
+            "a complete link (e.g., https://www.notion.so) and try again."
+        )
+        st.stop()
+
+    _FRIENDLY_ERROR = (
+        "Oops! That doesn't look like a valid URL. Please make sure to paste "
+        "a complete link (e.g., https://www.notion.so) and try again."
+    )
+
     try:
         with st.status("Analyzing competitor...", expanded=True) as status:
             st.write("Fetching page...")
@@ -473,11 +490,11 @@ if submitted:
             st.write(f"Running AI analysis with `{GEMINI_MODEL}`...")
             result = analyze(parsed)
             status.update(label="Analysis complete", state="complete", expanded=False)
-    except ScrapeError as e:
-        st.error(f"Scraping failed: {e}")
+    except ScrapeError:
+        st.warning(_FRIENDLY_ERROR)
         st.stop()
-    except AnalyzerError as e:
-        st.error(f"AI analysis failed: {e}")
+    except AnalyzerError:
+        st.warning(_FRIENDLY_ERROR)
         st.stop()
 
     # Generate the PDF once (not on every rerun) and cache alongside the result.
